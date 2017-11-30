@@ -4,6 +4,8 @@ import com.lin.workitem.model.User;
 import com.lin.workitem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,5 +30,19 @@ public class UserController {
     @RequestMapping("/index")
     public String toIndex(){
         return "login";
+    }
+
+
+
+    @RequestMapping("/login")
+    public String login(@ModelAttribute("user")User user, Model model){
+        String view = "success";
+        if("467888508@qq.com".equals(user.getUserName()) && "123456".equals(user.getPassword())){
+            model.addAttribute("username",user.getUserName());
+            return view;
+        }else {
+            view = "error";
+            return view;
+        }
     }
 }
