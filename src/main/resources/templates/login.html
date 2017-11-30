@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>登陆页面</title>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{bootstrap/css/bootstrap.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{bootstrap/css/sign.css}" rel="stylesheet">
+
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body class="login_back">
+<div class="container">
+    <form class="form-signin">
+        <h2 class="form-signin-heading">用户登录</h2>
+        <label for="inputEmail" class="sr-only">用户名</label>
+        <input type="email" id="inputEmail" class="form-control" placeholder="用户名" required autofocus>
+        <label for="inputPassword" class="sr-only">密码</label>
+        <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> 记住密码
+            </label>
+        </div>
+        <div class="btn-div">
+            <button class="btn btn-lg btn-login btn-width" type="submit">登录</button>
+            <button class="btn btn-lg btn-login btn-width btn-reg" type="submit">注册</button>
+        </div>
+    </form>
+</div> <!-- /container -->
+</body>
+</html>
