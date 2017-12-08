@@ -25,4 +25,9 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(pageNum, pageSize);
         return userMapper.selectAllUser();
     }
+
+    @Override
+    public User selectByName(User user) {
+        return userMapper.selectByName(user);
+    }
 }

@@ -27,13 +27,17 @@ spring:
         testOnReturn: false
         poolPreparedStatements: true
         maxOpenPreparedStatements: 20
-    thymeleaf:
-        prefix: classpath:/templates/
-        suffix: .html
-        encoding: utf-8
-        mode: HTML5
-        content-type: text/html
-        cache: false
+    mvc:
+      view:
+        suffix: .jsp
+        prefix: /WEB-INF/pages/
+    #thymeleaf:
+       # prefix: classpath:/templates/
+        #suffix: .html
+        #encoding: utf-8
+        #mode: HTML5
+        #content-type: text/html
+        #cache: false
 mybatis:
   mapper-locations: classpath:mapping/*.xml
   type-aliases-package: com.lin.workitem.model

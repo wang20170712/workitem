@@ -9,4 +9,6 @@ public interface UserService {
     int add(User user);
 
     List<User> selectAllUser(int pageNum, int pageSize);
+
+    User selectByName(User user);
 }

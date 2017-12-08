@@ -1,14 +1,18 @@
 package com.lin.workitem.controller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.lin.workitem.common.AjaxResult;
+import com.lin.workitem.common.ConstantsUtil;
+import com.lin.workitem.common.OperateUtil;
 import com.lin.workitem.model.User;
 import com.lin.workitem.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class UserController {
@@ -27,22 +31,37 @@ public class UserController {
         return userService.selectAllUser(pageNum,pageSize);
     }
 
-    @RequestMapping("/index")
-    public String toIndex(){
+    @RequestMapping("/login")
+    public String toLogin(){
         return "login";
     }
 
 
-
-    @RequestMapping("/login")
-    public String login(@ModelAttribute("user")User user, Model model){
-        String view = "success";
-        if("467888508@qq.com".equals(user.getUserName()) && "123456".equals(user.getPassword())){
-            model.addAttribute("username",user.getUserName());
-            return view;
+    /**
+     * 登陆
+     * @param user
+     * @return
+     */
+    @RequestMapping(value = "/toIndex")
+    @ResponseBody
+    public AjaxResult toIndex(User user){
+       User userInfo = userService.selectByName(user);
+        if(userInfo != null){
+            if (user.getPassword().equals(userInfo.getPassword())){
+               return OperateUtil.returnObj(ConstantsUtil.SUCCESS);
+            }else{
+                return OperateUtil.returnObj(ConstantsUtil.ERROR);
+            }
         }else {
-            view = "error";
-            return view;
+            return OperateUtil.returnObj(ConstantsUtil.USERNAME_NOT_EXIST);
         }
+       /* String str = "{\"result\":\"success\",\"message\":\"成功！\",\"data\":[{\"name\":\"Tom\",\"age\":\"20\"}]}";
+        JSONObject json = JSONObject.parseObject(str);
+        return json;*/
+    }
+
+    @RequestMapping("/main")
+    public String main(){
+        return "h_ui/index";
     }
 }
