@@ -6,11 +6,13 @@ import com.lin.workitem.common.ConstantsUtil;
 import com.lin.workitem.common.OperateUtil;
 import com.lin.workitem.model.User;
 import com.lin.workitem.service.UserService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,17 +46,24 @@ public class UserController {
      */
     @RequestMapping(value = "/toIndex")
     @ResponseBody
-    public AjaxResult toIndex(User user){
-       User userInfo = userService.selectByName(user);
-        if(userInfo != null){
-            if (user.getPassword().equals(userInfo.getPassword())){
-               return OperateUtil.returnObj(ConstantsUtil.SUCCESS);
-            }else{
-                return OperateUtil.returnObj(ConstantsUtil.ERROR);
-            }
-        }else {
-            return OperateUtil.returnObj(ConstantsUtil.USERNAME_NOT_EXIST);
-        }
+    public AjaxResult toIndex(User user,String vcode,HttpServletRequest request){
+
+       String verifyCode = (String) request.getSession().getAttribute(ConstantsUtil.VERIFY_CODE);
+       if(StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(vcode)){
+           return OperateUtil.returnObj(ConstantsUtil.VERIFY_CODE_ERROR);
+       }else {
+           User userInfo = userService.selectByName(user);
+           if(userInfo != null){
+               if (user.getPassword().equals(userInfo.getPassword())){
+                   return OperateUtil.returnObj(ConstantsUtil.SUCCESS);
+               }else{
+                   return OperateUtil.returnObj(ConstantsUtil.ERROR);
+               }
+           }else {
+               return OperateUtil.returnObj(ConstantsUtil.USERNAME_NOT_EXIST);
+           }
+       }
+
        /* String str = "{\"result\":\"success\",\"message\":\"成功！\",\"data\":[{\"name\":\"Tom\",\"age\":\"20\"}]}";
         JSONObject json = JSONObject.parseObject(str);
         return json;*/

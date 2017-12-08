@@ -13,4 +13,10 @@ public class ConstantsUtil {
      * 用户名不存在
      */
     public  static  final String USERNAME_NOT_EXIST = "01";
+    /**
+     * 验证码
+     */
+    public static final String VERIFY_CODE = "VERIFY_CODE";
+
+    public static  final String VERIFY_CODE_ERROR = "VERIFY_CODE_ERROR";
 }

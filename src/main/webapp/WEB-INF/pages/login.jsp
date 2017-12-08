@@ -26,6 +26,11 @@
   <script type="text/javascript" src="static/h-ui/js/H-ui.min.js"></script>
   <script type="text/javascript">
       $(function () {
+          if ($.cookie("rmbPassword") == "true") {
+              $("#online").attr("checked", true);
+              $("#userName").val($.cookie("username"));
+              $("#password").val($.cookie("passWord"));
+          }
           $("#login_action").click(function () {
               if($("#userName").val() == null || $("#userName").val() == ""){
                   alert("邮箱不能为空");
@@ -35,28 +40,54 @@
                   alert("密码不能为空");
                   return false;
               }
+              if($("#vcode").val() == null || $("#vcode").val() == ""){
+                  alert("验证码不能为空");
+                  return false;
+              }
               $.ajax({
                   type:"post",
                   url:"/toIndex",
                   dataType:"json",
                   data:{
                       userName:$("#userName").val(),
-                      password:$("#password").val()
+                      password:$("#password").val(),
+                      vcode:$("#vcode").val()
                   },
                   success:function (json) {
                      if(json.resultMsg == "00"){
+                         if ($("#online").is(':checked')) {
+                             var str_username = $("#userName").val();
+                             var str_password = $("#password").val();
+                             $.cookie("rmbPassword", "true", { expires: 7 }); //存储一个带7天期限的cookie
+                             $.cookie("username", str_username, { expires: 7 });
+                             $.cookie("passWord", str_password, { expires: 7 });
+                         }
+                         else {
+                             $.cookie("rmbPassword", "false", { expire: -1 });
+                             $.cookie("username", "", { expires: -1 });
+                             $.cookie("passWord", "", { expires: -1 });
+                         }
                           setTimeout("window.location.href='/main'",1000);
                       }else if(json.resultMsg == "99"){
                           alert("邮箱或密码不正确")
                       }else if(json.resultMsg == "01"){
                           alert("邮箱不存在");
+                      }else if (json.resultMsg = "VERIFY_CODE_ERROR"){
+                         alert("验证码错误");
                       }else {
-                          alert("未知异常");
-                      }
+                         alert("未知异常");
+                     }
                   }
               });
           });
       });
+
+
+      //点击图片刷新验证码
+      function vcodeclick() {
+          //$("#vcode").select();
+          $("#vimg").attr("src", "${ctx}/getVcode?random=" + Math.random());
+      }
   </script>
 </head>
 <body>
@@ -79,20 +110,20 @@
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-          <img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
+          <input id="vcode" class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
+          <img  id="vimg" src="/getVcode" onclick="vcodeclick()"> <a id="kanbuq" href="javascript:vcodeclick()">换一张</a> </div>
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
           <label for="online">
             <input type="checkbox" name="online" id="online" value="">
-            使我保持登录状态</label>
+            记住密码</label>
         </div>
       </div>
       <div class="row cl">
         <div class="formControls col-xs-8 col-xs-offset-3">
-          <input  id="login_action" name="" type="button" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
-          <input name="" type="reset" class="btn btn-default radius size-L" value="&nbsp;取&nbsp;&nbsp;&nbsp;&nbsp;消&nbsp;">
+          <input  id="login_action" name="" type="button" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
+          <input  id="register" name="" type="button" class="btn btn-success radius size-L" value="&nbsp;注&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;册&nbsp;">
         </div>
       </div>
     </form>
