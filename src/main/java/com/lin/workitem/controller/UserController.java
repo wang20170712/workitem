@@ -52,7 +52,7 @@ public class UserController {
        if(StringUtils.isBlank(verifyCode) || !verifyCode.equalsIgnoreCase(vcode)){
            return OperateUtil.returnObj(ConstantsUtil.VERIFY_CODE_ERROR);
        }else {
-           User userInfo = userService.selectByName(user);
+           User userInfo = userService.selectByName(user.getUserName());
            if(userInfo != null){
                if (user.getPassword().equals(userInfo.getPassword())){
                    return OperateUtil.returnObj(ConstantsUtil.SUCCESS);

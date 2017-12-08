@@ -10,5 +10,5 @@ public interface UserService {
 
     List<User> selectAllUser(int pageNum, int pageSize);
 
-    User selectByName(User user);
+    User selectByName(String userName);
 }
