@@ -44,7 +44,7 @@ public class UserController {
      * @param user
      * @return
      */
-    @RequestMapping(value = "/toIndex")
+    @RequestMapping(value = "/loginPost")
     @ResponseBody
     public AjaxResult toIndex(User user,String vcode,HttpServletRequest request){
 
@@ -55,6 +55,7 @@ public class UserController {
            User userInfo = userService.selectByName(user.getUserName());
            if(userInfo != null){
                if (user.getPassword().equals(userInfo.getPassword())){
+                   request.getSession().setAttribute("user",userInfo);
                    return OperateUtil.returnObj(ConstantsUtil.SUCCESS);
                }else{
                    return OperateUtil.returnObj(ConstantsUtil.ERROR);

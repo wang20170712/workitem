@@ -46,7 +46,7 @@
               }
               $.ajax({
                   type:"post",
-                  url:"/toIndex",
+                  url:"/loginPost",
                   dataType:"json",
                   data:{
                       userName:$("#userName").val(),
